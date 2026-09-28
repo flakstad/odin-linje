@@ -1,0 +1,26 @@
+name: CI
+
+permissions:
+  contents: read
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        odin-release: [dev-2026-08, dev-2026-09]
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+      - name: Install Odin
+        uses: laytan/setup-odin@8536d8fa450ec6f1bd9ddc84bbaaf16296c0051d # v2.12.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release: ${{ matrix.odin-release }}
+      - name: Test client
+        run: odin test . -vet -strict-style

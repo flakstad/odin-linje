@@ -1,0 +1,8 @@
+{
+  "name": "odin-linje",
+  "description": "Typed Odin client for the Linje message API",
+  "url": "https://github.com/flakstad/odin-linje",
+  "license": "MIT",
+  "version": "0.1.0",
+  "keywords": ["email", "linje", "http"]
+}

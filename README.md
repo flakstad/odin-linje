@@ -40,6 +40,12 @@ The default transport uses libcurl with TLS verification, no redirects, a
 specialized consumers may inject a `Transport_Proc`; the client never retries
 implicitly.
 
+`verify_webhook` verifies outbound message lifecycle callbacks independently
+of any HTTP framework. Pass the exact raw request body and the six Linje
+headers in `Webhook_Headers`; a successful result is an owned `Webhook_Event`
+released with `delete_webhook_event`. Applications remain responsible for the
+1 MiB body limit, durable `event_id` deduplication and delivery-state effects.
+
 Run the tests with:
 
 ```sh

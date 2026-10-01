@@ -45,6 +45,8 @@ timeouts. It returns an owned body, optional Retry-After value, status, and a
 transport error. This keeps protocol tests deterministic while the default
 libcurl implementation exercises the same interface.
 
-Outbound lifecycle webhook verification is intentionally not part of version
-0.1. It will be added as a separate API without widening or changing the
-message-submission contract.
+Outbound lifecycle webhook verification is a separate stateless API. It
+authenticates the exact raw body with HMAC-SHA256, enforces the five-minute
+replay window and validates the complete v1 identity envelope. Consumers still
+own bounded body reads, durable event deduplication, persistence and business
+effects.

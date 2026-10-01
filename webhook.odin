@@ -316,13 +316,28 @@ verify_webhook :: proc(
 		event.message.attempt_count = attempt_count
 	}
 	if last_error, ok := json_string(message_object, "last-error"); ok {
-		event.message.last_error, _ = clone_webhook_string(last_error, allocator)
+		cloned := false
+		event.message.last_error, cloned = clone_webhook_string(last_error, allocator)
+		if !cloned {
+			delete_webhook_event(event)
+			return {}, {kind = .Configuration, reason = "allocation"}
+		}
 	}
 	if delivered_at, ok := json_string(message_object, "delivered-at"); ok {
-		event.message.delivered_at, _ = clone_webhook_string(delivered_at, allocator)
+		cloned := false
+		event.message.delivered_at, cloned = clone_webhook_string(delivered_at, allocator)
+		if !cloned {
+			delete_webhook_event(event)
+			return {}, {kind = .Configuration, reason = "allocation"}
+		}
 	}
 	if updated_at, ok := json_string(message_object, "updated-at"); ok {
-		event.message.updated_at, _ = clone_webhook_string(updated_at, allocator)
+		cloned := false
+		event.message.updated_at, cloned = clone_webhook_string(updated_at, allocator)
+		if !cloned {
+			delete_webhook_event(event)
+			return {}, {kind = .Configuration, reason = "allocation"}
+		}
 	}
 	return event, {}
 }
